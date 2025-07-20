@@ -39,6 +39,51 @@ public:
         }
         return dp[target][0];
     }
+    //SPACE OPTIMISATION
+    bool solveSo1(vector<int>& nums, int target){
+        int n= nums.size();
+        // vector<vector<bool>> dp(target+1, vector<bool>(n+1, 0));
+        vector<int> next(target+1,0);
+        vector<int> curr(target+1,0);
+        //BASE CASE ANALYSIS
+        for(int col =0;col<=nums.size();col++){
+            next[0] = true;
+        }
+        for(int i=n-1;i>=0;i--){
+            for(int t=1;t<=target;t++){
+                bool inc = 0;
+                if (t - nums[i] >= 0) {
+                     inc = next[t - nums[i]];
+                }
+                bool exc = next[t];
+                curr[t] = inc || exc;
+            }
+            next = curr;
+        }
+        return next[target];
+    }
+    //SPACE OPTIMISATION ONLY 1D ARRAY
+        bool solveSo2(vector<int>& nums, int target){
+        int n= nums.size();
+        // vector<vector<bool>> dp(target+1, vector<bool>(n+1, 0));
+        // vector<int> next(target+1,0);
+        vector<int> curr(target+1,0);
+        //BASE CASE ANALYSIS
+        for(int col =0;col<=nums.size();col++){
+            curr[0] = true;
+        }
+        for(int i=n-1;i>=0;i--){
+            for(int t=target;t>=1;t--){
+                bool inc = 0;
+                if (t - nums[i] >= 0) {
+                     inc = curr[t - nums[i]];
+                }
+                bool exc = curr[t];
+                curr[t] = inc || exc;
+            }
+        }
+        return curr[target];
+    }
     bool canPartition(vector<int>& nums) {
         int n = nums.size();
         int sum = accumulate(nums.begin(),nums.end(), 0);
@@ -47,6 +92,8 @@ public:
         // return solve(nums,target,0);
         // vector<vector<int> > dp(target+1, vector<int>(n+1, -1));
         // return solveMem(nums, target, 0, dp);
-        return solveTab(nums,target);
+        // return solveTab(nums,target);
+        // return solveSo1(nums,target);
+        return solveSo2(nums,target);
     }
 };
