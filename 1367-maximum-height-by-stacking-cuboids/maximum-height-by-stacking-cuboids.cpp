@@ -28,6 +28,22 @@ public:
         dp[curr][prev+1] = max(inc, exc);
         return dp[curr][prev+1];
     }
+    //bottom up
+    int solveTab(vector<vector<int>>& cuboids){
+        int n= cuboids.size();
+        vector<vector<int>> dp(n+1,vector<int>(n+1, 0));
+        for(int curr=n-1;curr>=0;curr--){
+            for(int prev=curr-1;prev>=-1;prev--){
+                int inc = 0;
+                if(prev == -1 || isSafe(cuboids[prev], cuboids[curr])){
+                      inc = cuboids[curr][2] + dp[curr+1][curr+1];//bcoz prev + 1 karna hai
+                }
+                int exc = 0 + dp[curr+1][prev+1];
+                dp[curr][prev+1] = max(inc, exc);
+            }
+        }
+        return dp[0][-1+1];
+    }
     int maxHeight(vector<vector<int>>& cuboids) {
         int curr = 0;
         int prev = -1;
@@ -39,7 +55,8 @@ public:
         //SORT CUBOIDS FOR BASE LENGTH OR BREADTH
         sort(cuboids.begin(), cuboids.end());
         // return solveRec(cuboids, curr, prev);
-        vector<vector<int>> dp(n+1,vector<int>(n+1, -1));
-        return solveMem(cuboids,curr, prev, dp);
+        // vector<vector<int>> dp(n+1,vector<int>(n+1, -1));
+        // return solveMem(cuboids,curr, prev, dp);
+        return solveTab(cuboids);
     }
 };
