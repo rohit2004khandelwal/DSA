@@ -63,6 +63,25 @@ public:
         }
         return prevRow[-1+1];
     }
+    //SPACE OPT2
+    int solveTabSO2(vector<vector<int>>& cuboids){
+        int n= cuboids.size();
+        // vector<vector<int>> dp(n+1,vector<int>(n+1, 0));
+        vector<int>prevRow(n+1, 0);
+        vector<int>currRow(n+1, 0);
+        for(int curr=n-1;curr>=0;curr--){
+            for(int prev=curr-1;prev>=-1;prev--){
+                int inc = 0;
+                if(prev == -1 || isSafe(cuboids[prev], cuboids[curr])){
+                      inc = cuboids[curr][2] + currRow[curr+1];//bcoz prev + 1 karna hai
+                }
+                int exc = 0 + currRow[prev+1];
+                currRow[prev+1] = max(inc, exc);
+            }
+            // prevRow = currRow;
+        }
+        return currRow[-1+1];
+    }
     int maxHeight(vector<vector<int>>& cuboids) {
         int curr = 0;
         int prev = -1;
@@ -77,6 +96,7 @@ public:
         // vector<vector<int>> dp(n+1,vector<int>(n+1, -1));
         // return solveMem(cuboids,curr, prev, dp);
         // return solveTab(cuboids);
-        return solveTabSO(cuboids);
+        // return solveTabSO(cuboids);
+        return solveTabSO2(cuboids);
     }
 };
