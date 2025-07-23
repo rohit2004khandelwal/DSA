@@ -31,11 +31,34 @@ public:
         dp[i][j] = ans;
         return dp[i][j];
     }
+    //BOTTOM UP
+    int solveTab(string text1, string text2){
+        vector<vector<int>> dp(text1.length()+1, vector<int>(text2.length()+1, 0));
+        //BASE CASE:- KYUKI HAM PEHLI HI SAB O KAR CHUKE HIA TOH BAAR BAAR LIKHNE KI JARURAT NHI AAYEGA DP MAI -1 LIKHTE TOH 
+        //BASE CASE ALAG SE HANDLE KARNA PADTA AS WE DO IN MOSTLY QUES
+        int ans = 0;
+        //  i -> 0 to text1.length;
+        //  j -> 0 to text2.length;
+        for(int i = text1.length()-1; i>=0;i--){
+            for(int j = text2.length()-1; j>=0; j--){
+                int ans = 0;
+                if(text1[i] == text2[j]){
+                    ans = 1 + dp[i+1][j+1];
+                }
+                else{ // no match
+                    ans = 0 + max(dp[i+1][j],dp[i][j+1]);
+                }
+                dp[i][j] = ans;
+            }
+        }
+        return dp[0][0];//FOR THIS CHECK RECURSION CALL WE PASS I AND J BOTH 0
+    }
     int longestCommonSubsequence(string text1, string text2) {
         int i=0;
         int j=0;
         // return solveRec(text1, text2, i, j);
-        vector<vector<int>> dp(text1.length()+1, vector<int>(text2.length()+1, -1));
-        return solveMem(text1, text2, i, j, dp);
+        // vector<vector<int>> dp(text1.length()+1, vector<int>(text2.length()+1, -1));
+        // return solveMem(text1, text2, i, j, dp);
+        return solveTab(text1, text2);
     }
 };
