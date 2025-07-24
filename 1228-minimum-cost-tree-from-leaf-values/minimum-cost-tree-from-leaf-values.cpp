@@ -30,7 +30,26 @@ public:
         return dp[s][e];
     }
     //Bottom up
-    // int solveTab()
+    int solveTab(vector<int>& arr, map<pair<int,int>, int>& maxi){
+        int n = arr.size();
+        vector<vector<int>> dp(n+1,vector<int>(n+1, 0));
+        for(int s=n-1;s>=0;s--){
+            for(int e=0;e<=n-1;e++){
+                if(s>=e) continue;  //BASE CASE - ALREADY KAR CHUKE HAI ZERO DAL KE
+                else{
+                    int ans = INT_MAX;
+                    for(int i = s; i < e; i++){
+                        int leftRangeMax = maxi[{s,i}];
+                        int rightRangeMax = maxi[{i+1,e}];
+                        int nonLeafValue = leftRangeMax * rightRangeMax;
+                        ans = min(ans, nonLeafValue + dp[s][i] + dp[i+1][e]);
+                    }
+                    dp[s][e] = ans;
+                }
+            }
+        }
+        return dp[0][n-1];
+    }
     int mctFromLeafValues(vector<int>& arr) {
         map< pair<int,int>, int> maxi;
 
@@ -49,7 +68,8 @@ public:
         int s = 0;
         int e = n - 1;
         // return solveRec(arr,maxi,s,e);
-        vector<vector<int>> dp(n+1,vector<int>(n+1,-1));
-        return solveMem(arr,maxi,s,e,dp);
+        // vector<vector<int>> dp(n+1,vector<int>(n+1,-1));
+        // return solveMem(arr,maxi,s,e,dp);
+        return solveTab(arr, maxi);
     }
 };
