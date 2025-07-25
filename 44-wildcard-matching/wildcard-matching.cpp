@@ -57,12 +57,46 @@ public:
         return dp[i][j];
 
     }
+    //BOTTOM UP
+    bool solveTab(string& s, string& p, int m, int n){
+        vector<vector<int> >dp(m+1, vector<int>(n+1,0));
+        dp[m][n] = true;
+
+        for(int col = 0; col < n; col++){
+            bool flag = true;
+            for(int k = col; k<p.length();k++){
+                if(p[k] != '*'){
+                    flag = false;
+                    break;
+                }
+            }
+            dp[m][col] = flag;
+        }
+
+        for(int i = m-1; i >= 0; i--){
+            for(int j = n; j >= 0; j--){
+                bool ans;
+                if(p[j] == '?' || s[i] == p[j]){
+                    ans =  dp[i+1][j+1];
+                }
+                else if(p[j] == '*'){
+                    ans =  dp[i+1][j] || dp[i][j+1];
+                }
+                else{
+                    ans =  false;
+                }
+                dp[i][j] = ans;
+            }
+        }
+        return dp[0][0];
+    }
     bool isMatch(string s, string p) {
         // bool ans = solveRec(s, p, 0, 0);
         // return ans;
         int m = s.length();
         int n = p.length();
-        vector<vector<int>> dp(m+1, vector<int>(n+1, -1));
-        return solveMem(s, p, 0, 0, dp);
+        // vector<vector<int>> dp(m+1, vector<int>(n+1, -1));
+        // return solveMem(s, p, 0, 0, dp);
+        return solveTab(s,p,m,n);
     }
 };
