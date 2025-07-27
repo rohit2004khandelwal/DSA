@@ -33,9 +33,27 @@ public:
         dp[n] = ans;
         return dp[n];
     }
+    //BOTTOM UP
+    int solveTab(int n){
+        vector<int> dp(n+1, 0);
+        for(int i=1;i<=n;i++){
+        int ans = INT_MAX;
+        int start = 1;
+        int end = sqrt(i);
+        while(start <= end){
+            int perfectSquare = start * start;
+            int numberOfPerfectSquares = 1 + dp[i-perfectSquare];
+            if(numberOfPerfectSquares < ans) ans = numberOfPerfectSquares;
+            start++;
+        }
+        dp[i] = ans;
+        }
+        return dp[n];
+    }
     int numSquares(int n) {
         // return solveRec(n);
-        vector<int> dp(n+1, -1);
-        return solveMem(n,dp);
+        // vector<int> dp(n+1, -1);
+        // return solveMem(n,dp);
+        return solveTab(n);
     }
 };
