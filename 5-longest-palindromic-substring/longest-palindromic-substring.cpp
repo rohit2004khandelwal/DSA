@@ -9,17 +9,20 @@ public:
     //TOP DOWN
      bool solveMem(string &s, int i, int j, vector<vector<int>> &dp){
         if(i >= j) return true;//BASE CASE
+        if(dp[i][j] != -1) return dp[i][j];
         //MAIN
-        if(s[i] == s[j]) return solveMem(s, i+1, j-1, dp);
-        return false;
+        bool ans;
+        if(s[i] == s[j]) ans = solveMem(s, i+1, j-1, dp);
+        else ans = false;
+        return dp[i][j] = ans;
     }
     string longestPalindrome(string s) {
         int n = s.length();
         vector<vector<int>> dp(n+1, vector<int>(n+1, -1));
-        int maxLen = INT_MIN;
+        int maxLen = 0;
         int sp = 0;
         for(int i=0;i<n;i++){
-            for(int j=1;j<n;j++){
+            for(int j=i;j<n;j++){
                 if(solveMem(s, i, j, dp) == true){
                     if(j-i+1 > maxLen){
                         maxLen = j-i+1;
