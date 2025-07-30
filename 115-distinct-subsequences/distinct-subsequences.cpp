@@ -52,10 +52,33 @@ public:
         }
         return (int)dp[0][0];
     }
+    //SPACE OPT
+    int solveTabSO(string& s, string& t) {
+        int n = t.length();
+        vector<double>curr(n+1, 0.0);
+        vector<double>next(n+1, 0.0);
+
+        next[n] = 1.0;
+        // MAIN LOGIC
+        for (int i = s.length() - 1; i >= 0; i--) {
+            curr[n] = 1.0;
+            for (int j = t.length() - 1; j >= 0; j--) {
+                double ans = 0.0;
+                if (s[i] == t[j]) {
+                    ans += next[j + 1];
+                }
+                ans += next[j];
+                curr[j] = ans;
+            }
+            next = curr;
+        }
+        return (int)next[0];
+    }
     int numDistinct(string s, string t) {
         // return solveRec(s, t, 0, 0);
         // vector<vector<int>> dp(s.length()+1, vector<int>(t.length()+1, -1));
         // return solveMem(s, t, 0, 0, dp);
-        return solveTab(s, t);
+        // return solveTab(s, t);
+        return solveTabSO(s, t);
     }
 };
