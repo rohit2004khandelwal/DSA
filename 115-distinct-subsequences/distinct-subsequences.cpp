@@ -58,10 +58,10 @@ public:
         vector<double>curr(n+1, 0.0);
         vector<double>next(n+1, 0.0);
 
-        next[n] = 1.0;
+        next[n] = 1.0;//no need of loop just set the last value of next to 1 using base case
         // MAIN LOGIC
         for (int i = s.length() - 1; i >= 0; i--) {
-            curr[n] = 1.0;
+            curr[n] = 1.0;//here also set the value of last value of curr to 1 using base case
             for (int j = t.length() - 1; j >= 0; j--) {
                 double ans = 0.0;
                 if (s[i] == t[j]) {
