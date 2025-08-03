@@ -11,6 +11,7 @@ public:
     //TOP down
     int solveMem(int n, vector<int> &dp){
         if(n <= 1) return 1;
+        if(dp[n] != -1) return dp[n];
         int ans = 0;
         for(int i=1;i<=n;i++){
             ans += solveMem(i-1, dp) * solveMem(n-i, dp);
@@ -18,9 +19,11 @@ public:
         dp[n] = ans;
         return dp[n];
     }
+    //BOTTOM UP
     int numTrees(int n) {
         // return solveRec(n);
         vector<int> dp(n+1, -1);
         return solveMem(n, dp);
+        // return solveTab(n);
     }
 };
