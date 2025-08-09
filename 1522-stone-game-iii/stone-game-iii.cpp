@@ -1,7 +1,7 @@
 class Solution {
 public:
     int solveRec(vector<int>& stoneValue, int i){
-         if(i == stoneValue.size()) return 0;
+        if(i == stoneValue.size()) return 0;
         int ans = INT_MIN;
         int total = 0;
         for(int X = 1; X <= 3; X++){ // X: how many stone picked
@@ -24,10 +24,26 @@ public:
         }
         return dp[i] = ans;
     }
+    //Bottom UP
+    int solveTab(vector<int>& stoneValue){
+        vector<int> dp(stoneValue.size()+1, 0);
+        for(int i=stoneValue.size()-1;i>=0;i--){
+            int ans = INT_MIN;
+            int total = 0;
+            for(int X = 1; X <= 3; X++){ // X: how many stone picked
+                if(i + X - 1 >= stoneValue.size()) break;
+                total += stoneValue[i + X - 1];
+                ans = max(ans, total - dp[i + X]);
+            }
+            dp[i] = ans;
+        }
+        return dp[0];
+    }
     string stoneGameIII(vector<int>& stoneValue) {
         // int ans = solveRec(stoneValue, 0);//A-B
-        vector<int> dp(stoneValue.size()+1, -1);
-        int ans = solveMem(stoneValue, 0, dp);
+        // vector<int> dp(stoneValue.size()+1, -1);
+        // int ans = solveMem(stoneValue, 0, dp);
+        int ans = solveTab(stoneValue);
         if(ans > 0) return "Alice";
         if(ans < 0) return "Bob";
         return "Tie";
