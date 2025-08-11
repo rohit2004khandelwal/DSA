@@ -47,8 +47,8 @@ public:
     }
     bool isInterleave(string s1, string s2, string s3) {
         // return solveRec(s1, s2, s3, 0, 0, 0);
-        // vector<vector<vector<int>>>dp(s1.size() + 1, vector<vector<int>>(s2.size() + 1, vector<int>(s3.size() + 1, -1)));
-        // return solveMem(s1, s2, s3, 0, 0, 0, dp);
-        return solveTab(s1, s2, s3);
+        vector<vector<vector<int>>>dp(s1.size() + 1, vector<vector<int>>(s2.size() + 1, vector<int>(s3.size() + 1, -1)));
+        return solveMem(s1, s2, s3, 0, 0, 0, dp);
+        // return solveTab(s1, s2, s3);
     }
 };
