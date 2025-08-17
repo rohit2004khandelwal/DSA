@@ -36,9 +36,34 @@ public:
         }
         return dp[i][buy][limit] = profit;
     }
+    //BOTTOM UP
+    int solveTab(vector<int>& prices){
+        vector<vector<vector<int>>> dp(prices.size()+1, vector<vector<int>>(2, vector<int>(3, 0)));
+        
+        for(int i=prices.size()-1; i>=0; i--){
+            for(int buy=0; buy<=1; buy++){
+                for(int limit=1; limit<=2; limit++){ //LIMIT 0 WALA CASE ALREADY HANDLE HO CHUKA HAI
+                    int profit = 0;
+                    if(buy){
+                        int buyKaro = -prices[i] + dp[i+1][0][limit];
+                        int skipKaro = 0 + dp[i+1][1][limit];
+                        profit = max(buyKaro, skipKaro);
+                    }
+                    else{
+                        int sellKaro = prices[i] + dp[i+1][1][limit-1];//SELL HONE PAR HI EK TRANSACTION KHTM HOGI ISLIYE SELL PAR LIMIT-1 LARNA HAI
+                        int skipKaro = 0 + dp[i+1][0][limit];
+                        profit = max(sellKaro, skipKaro);
+                    }
+                    dp[i][buy][limit] = profit;
+                }
+            }
+        }
+        return dp[0][1][2];
+    }
     int maxProfit(vector<int>& prices) {
         // return solveRec(0, 1, 2, prices);
-        vector<vector<vector<int>>> dp(prices.size()+1, vector<vector<int>>(2, vector<int>(3, -1)));
-        return solveMem(0, 1, 2, prices, dp);
+        // vector<vector<vector<int>>> dp(prices.size()+1, vector<vector<int>>(2, vector<int>(3, -1)));
+        // return solveMem(0, 1, 2, prices, dp);
+        return solveTab(prices);
     }
 };
