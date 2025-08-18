@@ -27,7 +27,45 @@ public:
         }
         return next[1][k];
     }
+    //USING TRANSACTION NUMBER
+    int solve(int i, int optNo, int k, vector<int>& prices){
+        if(i == prices.size()) return 0;
+        if(optNo == 2*k) return 0;
+        int profit = 0;
+        if(optNo%2 == 0){
+            int buyKaro = -prices[i] + solve(i+1, optNo+1, k, prices);
+            int skipKaro = 0 + solve(i+1, optNo, k, prices);
+            profit = max(buyKaro, skipKaro);
+        }
+        else{
+            int sellKaro = prices[i] + solve(i+1, optNo+1, k, prices);
+            int skipKaro = 0 + solve(i+1, optNo, k, prices);
+            profit = max(sellKaro, skipKaro);
+        }
+        return profit;
+    }
+    //TOP DOWN
+    int solveMem(int i, int optNo, int k, vector<int>& prices, vector<vector<int>> &dp){
+        if(i == prices.size()) return 0;
+        if(optNo == 2*k) return 0;
+        if(dp[i][optNo] != -1) return dp[i][optNo];
+        int profit = 0;
+        if(optNo%2 == 0){
+            int buyKaro = -prices[i] + solveMem(i+1, optNo+1, k, prices, dp);
+            int skipKaro = 0 + solveMem(i+1, optNo, k, prices, dp);
+            profit = max(buyKaro, skipKaro);
+        }
+        else{
+            int sellKaro = prices[i] + solveMem(i+1, optNo+1, k, prices, dp);
+            int skipKaro = 0 + solveMem(i+1, optNo, k, prices, dp);
+            profit = max(sellKaro, skipKaro);
+        }
+        return dp[i][optNo] = profit;
+    }
     int maxProfit(int k, vector<int>& prices) {
-        return solveTabSO(prices, k);
+        // return solveTabSO(prices, k);
+        // return solve(0, 0, k, prices);
+        vector<vector<int>> dp(prices.size()+1, vector<int>(2*k, -1));
+        return solveMem(0, 0, k, prices, dp);
     }
 };
