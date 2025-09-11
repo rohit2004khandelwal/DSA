@@ -4,23 +4,24 @@ public:
         return c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' || c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
     }
     string sortVowels(string s) {
-        string temp;
-        for(char c : s){
+        unordered_map<char, int> mp;
+        for(char &c:s){
             if(isVowel(c)){
-                temp += c;
+                mp[c]++;
             }
         }
-        sort(temp.begin(), temp.end());
-        string ans;
+        string temp = "AEIOUaeiou";
         int j=0;
-        for(int i=0;i<=s.length()-1;i++){
+        for(int i=0;i<s.length();i++){
             if(isVowel(s[i])){
-                ans += temp[j];
-                j++;
-            }else{
-                ans += s[i];
+                while(mp[temp[j]] == 0){
+                    j++;
+                }
+                s[i] = temp[j];
+                mp[temp[j]]--;
             }
         }
-        return ans;
+        return s;
+        
     }
 };
