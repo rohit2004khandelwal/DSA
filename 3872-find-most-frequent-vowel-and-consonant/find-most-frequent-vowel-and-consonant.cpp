@@ -2,17 +2,20 @@ class Solution {
 public:
     int maxFreqSum(string s) {
         int maxVowel = 0;
-        int maxCons = 0;
-        string vowel = "aeiou";
-        unordered_map<char, int> freq;
-        for(char ch:s){
-            freq[ch]++;
-            if(vowel.find(ch) != string::npos){
-                maxVowel = max(maxVowel, freq[ch]);
-            }else{
-                maxCons = max(maxCons, freq[ch]);
+        int maxCons  = 0;
+
+        int arr[26] = {0};
+
+        for(char &ch : s) {
+            arr[ch-'a']++;
+
+            if(string("aeiou").find(ch) != string::npos) {
+                maxVowel = max(maxVowel, arr[ch-'a']);
+            } else {
+                maxCons = max(maxCons, arr[ch-'a']);
             }
         }
-        return maxVowel + maxCons;
+
+        return maxCons + maxVowel;
     }
 };
