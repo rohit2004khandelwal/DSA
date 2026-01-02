@@ -9,6 +9,6 @@ public:
                 return nums[i];
             }
         }
-        return n;
+        return -1;
     }
 };
