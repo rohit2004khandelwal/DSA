@@ -7,6 +7,6 @@ public:
             prefix += x;
             minPfx = min(minPfx, prefix); 
         }
-        return (minPfx<0) ? 1-minPfx : 1;
+        return (minPfx<1) ? 1-minPfx : 1;
     }
 };
