@@ -5,15 +5,14 @@ public:
         int i=0,j=0;
         unordered_set<int> st;
         while(j < n){
-            if(st.find(nums[j]) != st.end() && j-i<=k){
-                return true;
-            }
-            st.insert(nums[j]);
-            
-            if(j-i+1 > k){
+            if(abs(i-j) > k){
                 st.erase(nums[i]);
                 i++;
             }
+            if(st.find(nums[j]) != st.end()){
+                return true;
+            }
+            st.insert(nums[j]);
             j++;
         }
         return false;
